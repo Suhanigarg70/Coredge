@@ -1,0 +1,42 @@
+name: "smolLM2"
+backend: "python"
+
+max_batch_size: 8
+
+input [
+  {
+    name: "input_ids"
+    data_type: TYPE_INT32
+    dims: [ -1 ]  # Variable-length input
+  },
+  {
+    name: "attention_mask"
+    data_type: TYPE_INT32
+    dims: [ -1 ]  # Variable-length input
+  }
+]
+
+output [
+  {
+    name: "output_ids"
+    data_type: TYPE_INT32
+    dims: [ -1 ]  # Variable-length output
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_CPU  # Ensure the model runs on the CPU
+  }
+]
+
+parameters: {
+  key: "huggingface_model"
+  value: { string_value: "HuggingFaceTB/SmolLM2-1.7B" }
+}
+
+parameters: {
+  key: "max_output_length"
+  value: { string_value: "20" }
+}
+
