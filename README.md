@@ -16,15 +16,18 @@ It mainly uses GPU and Nvidia Cuda for its working but if you don't have GPU the
 https://catalog.ngc.nvidia.com/orgs/nvidia/containers/tritonserver/tags
 
 # The structure of the folders of the model repository
+```
 model_repository/ 
 └── <model-name>/ 
            ── config.pbtxt
           ── 1/ 
          	── model.onnx # or the appropriate model file (model.pt, model.pb etc)
                 └── (other files if required) 
+```
                    
 # Example of config.pbtxt file
 
+```
 name: "<model-name>" ex - NuExtract
 platform: "<runtime-name>" ex - onnxruntime_onnx
 max_batch_size: 8
@@ -42,7 +45,7 @@ output [
 	dims: [ -1, -1, -1 ]
   }
 ]
-
+```
 # Steps to Create config.pbtxt
 
 A. Understand Model Inputs and Outputs
