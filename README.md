@@ -89,18 +89,20 @@ If using a pre-converted ONNX model, use "onnxruntime_onnx".
 **D. Specify Hardware Resources**
 
 For NVIDIA GPU-enabled devices, set:
+```
 instance_group [
   {
     kind: KIND_GPU
   }]
+```
 Otherwise, use:
-
+```
 instance_group [
   {
     kind: KIND_CPU
   }
 ]
-
+```
 # Script to create a model.onnx file
 ```
 import torch
@@ -217,8 +219,10 @@ if __name__ == "__main__":
     else:
         print("Unsupported framework!")
 ```
+**Run this command**
+```
 python3 inspect_model.py path/to/model.onnx --framework <framework-name>
-
+```
 # Example of a model.pt file
 ```
 import os
@@ -289,9 +293,9 @@ triton-transformer-server tritonserver --model-repository=/opt/tritonserver/mode
 # Client-Side Inference
 You can use the Triton Client SDK to send inference requests to the server.
 Install Triton Client SDK:
-
+```
 pip install tritonclient[all]
-
+```
 **Example Python Script for Inference:**
 ```
 import numpy as np
