@@ -1,0 +1,190 @@
+name: "llama3.2-1b_fp16"
+platform: "onnxruntime_onnx"
+max_batch_size: 0
+
+input [
+  {
+    name: "input_ids"
+    data_type: TYPE_INT64
+    dims: [ -1 , -1 ]  # Adjust based on your model's input shape
+  },
+  {
+    name: "attention_mask"
+    data_type: TYPE_INT64
+    dims: [ -1 , -1 ]  # Adjust based on your model's input shape
+  },
+  {
+    name: "position_ids"
+    data_type: TYPE_INT64
+    dims: [ -1 , -1 ]  # Adjust based on your model's input shape
+  },
+  {
+    name: "past_key_values.0.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.0.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.1.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.1.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.2.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.2.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.3.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.3.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.4.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.4.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.5.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.5.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.6.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.6.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.7.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.7.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.8.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.8.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.9.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.9.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.10.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.10.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.11.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.11.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.12.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.12.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.13.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.13.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.14.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.14.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.15.key"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  },
+  {
+    name: "past_key_values.15.value"
+    data_type: TYPE_FP32  # Changed to TYPE_FP32
+    dims: [ -1, 8, -1, 64 ]  # Adjusted to match the model's expected shape
+  }
+]
+
+output [
+  {
+    name: "logits"
+    data_type: TYPE_FP32
+    dims: [ -1, -1, 128256 ]  # Adjust based on your model's output shape
+  }
+]
+
