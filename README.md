@@ -9,21 +9,21 @@ Launching and maintaining the Triton Inference Server revolves around the use of
 . Triton Inference Server has support for TensorFlow, PyTorch, TensorRT, ONNX and OpenVINO models.
 
 
-**Get the docker container of triton inference server**
+# Get the docker container of triton inference server
 docker pull nvcr.io/nvidia/tritonserver:<xx.yy>-py3 - choose the latest version. 
 
 It mainly uses GPU and Nvidia Cuda for its working but if you don't have GPU then you can also work on it using CPU just choose the container compatible with CPU.You can choose the suitable container from the link below.
 https://catalog.ngc.nvidia.com/orgs/nvidia/containers/tritonserver/tags
 
-**The structure of the folders of the model repository**
+# The structure of the folders of the model repository
 model_repository/ 
 └── <model-name>/ 
            ── config.pbtxt
           ── 1/ 
-                      ── model.onnx # or the appropriate model file (model.pt, model.pb etc)
-                  	└── (other files if required) 
+         	── model.onnx # or the appropriate model file (model.pt, model.pb etc)
+                └── (other files if required) 
                    
-**Example of config.pbtxt file**
+# Example of config.pbtxt file
 
 name: "<model-name>" ex - NuExtract
 platform: "<runtime-name>" ex - onnxruntime_onnx
@@ -43,7 +43,7 @@ output [
   }
 ]
 
-**Steps to Create config.pbtxt**
+# Steps to Create config.pbtxt
 
 A. Understand Model Inputs and Outputs
 
@@ -95,7 +95,7 @@ instance_group [
   }
 ]
 
-**Script to create a model.onnx file**
+# Script to create a model.onnx file
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -104,10 +104,10 @@ model_name = "<model-name >" example - numind/NuExtract-1.5-smol
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, trust_remote_code=True)
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
  
-# Dummy input for export
+**Dummy input for export**
 dummy_input = tokenizer("Example input text", return_tensors="pt").input_ids
  
-# Export model to ONNX
+**Export model to ONNX**
 torch.onnx.export(
 	model,
 	(dummy_input,),
@@ -120,7 +120,7 @@ torch.onnx.export(
 print("Model successfully exported to ONNX!")
  
 
-**Script for detecting the model architecture**
+# Script for detecting the model architecture
 You need to know the model architecture in order to create a config.pbtxt file. This file will give ou the architecture of the document from which you can extract the input and outputs name and sizes and much more.
 
 import argparse
@@ -213,7 +213,7 @@ if __name__ == "__main__":
 
 python3 inspect_model.py path/to/model.onnx --framework <framework-name>
 
-**Example of a model.pt file**
+# Example of a model.pt file
 
 import os
 import json
@@ -224,17 +224,17 @@ import triton_python_backend_utils as pb_utils
  
 class TritonPythonModel:
 	def initialize(self, args):
-    	# Set up the cache directory for Hugging Face
+    	**Set up the cache directory for Hugging Face**
         os.environ["TRANSFORMERS_CACHE"] = "/opt/tritonserver/model_repository/smolLM2/hf-cache"
-    	# Load model configuration from Triton server
+    	**Load model configuration from Triton server**
         self.model_config = json.loads(args["model_config"])
         self.model_params = self.model_config.get("parameters", {})
  
-    	# Define model path
+    	**Define model path**
     	default_model = "HuggingFaceTB/SmolLM2-1.7B"
     	model_name = self.model_params.get("huggingface_model", {}).get("string_value", default_model)
  
-    	# Define max output length with a default value
+    	**Define max output length with a default value**
         default_max_length = "20"
         self.max_output_length = int(self.model_params.get("max_output_length", {}).get("string_value", default_max_length))
  
@@ -274,14 +274,16 @@ class TritonPythonModel:
      self.logger.log_info("Finalizing the SmolLM2 model.")
  
 
-**Run the container of the server with CPU and allocate the ports**
+# Run the container of the server with CPU and allocate the ports
 
  docker run -it --rm -p 8000:8000 -p 8001:8001 -p 8002:8002 \
 -v ${PWD}/model_repository:/opt/tritonserver/model_repository \
 triton-transformer-server tritonserver --model-repository=/opt/tritonserver/model_repository
-Client-Side Inference
+
+# Client-Side Inference
 You can use the Triton Client SDK to send inference requests to the server.
 Install Triton Client SDK:
+
 pip install tritonclient[all]
 
 **Example Python Script for Inference:
@@ -289,37 +291,37 @@ pip install tritonclient[all]
 import numpy as np
 import tritonclient.http as httpclient  # Use grpcclient for gRPC
 
-# Define server URL
+** Define server URL**
 TRITON_SERVER_URL = "localhost:8000"
 
-# Initialize client
+**Initialize client**
 client = httpclient.InferenceServerClient(url=TRITON_SERVER_URL)
 
-# Model name
+** Model name**
 model_name = "mymodel"
 
-# Check server health
+** Check server health**
 if not client.is_server_live():
     raise RuntimeError("Triton server is not live!")
 
-# Generate a dummy input for testing
+** Generate a dummy input for testing**
 input_data = np.random.rand(1, 3, 224, 224).astype(np.float32)
 
-# Create inference input
+**Create inference input**
 input_tensor = httpclient.InferInput("input_0", input_data.shape, "FP32")
 input_tensor.set_data_from_numpy(input_data)
 
-# Prepare inference output
+**Prepare inference output**
 output_tensor = httpclient.InferRequestedOutput("output_0")
 
-# Perform inference
+**Perform inference**
 response = client.infer(model_name, inputs=[input_tensor], outputs=[output_tensor])
 
-# Extract output
+**Extract output**
 output_data = response.as_numpy("output_0")
 print("Model output:", output_data)
 
-**Link of Triton Inference Server Documentation**
+# Link of Triton Inference Server Documentation
  
 https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/getting_started/quickstart.html
 
