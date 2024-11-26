@@ -48,7 +48,7 @@ output [
 ```
 # Steps to Create config.pbtxt
 
-A. Understand Model Inputs and Outputs
+**A. Understand Model Inputs and Outputs**
 
 Obtain model input/output details:
 For a Hugging Face/Transformers model, inputs typically include:
@@ -70,7 +70,8 @@ attention_mask: Binary mask (same length as input_ids).
 Outputs:
 output_ids: Sequence of generated tokens.
 
-B. Model-Specific Configuration
+**B. Model-Specific Configuration**
+
 Data Types: Match your input/output types:
 Token IDs (input_ids) → TYPE_INT32.
 Masks (attention_mask) → TYPE_INT32.
@@ -80,11 +81,13 @@ Shapes:
 Use [-1] for dynamic lengths.
 For fixed dimensions, specify exact sizes.
 
-C. Choose the Correct Platform
+**C. Choose the Correct Platform**
+
 Use "python" if you are running custom Python code for inference (e.g., with Transformers pipeline or PyTorch).
 If using a pre-converted ONNX model, use "onnxruntime_onnx".
 
-D. Specify Hardware Resources
+**D. Specify Hardware Resources**
+
 For NVIDIA GPU-enabled devices, set:
 instance_group [
   {
@@ -99,7 +102,7 @@ instance_group [
 ]
 
 # Script to create a model.onnx file
-
+```
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
  
@@ -121,11 +124,11 @@ torch.onnx.export(
     dynamic_axes={"input_ids": {0: "batch_size", 1: "sequence_length"}, "logits": {0: "batch_size", 1: "sequence_length"}},
 )
 print("Model successfully exported to ONNX!")
- 
+ ```
 
 # Script for detecting the model architecture
 You need to know the model architecture in order to create a config.pbtxt file. This file will give ou the architecture of the document from which you can extract the input and outputs name and sizes and much more.
-
+```
 import argparse
 import os
 import onnx
@@ -213,11 +216,11 @@ if __name__ == "__main__":
         inspect_openvino_model(args.model_path)
     else:
         print("Unsupported framework!")
-
+```
 python3 inspect_model.py path/to/model.onnx --framework <framework-name>
 
 # Example of a model.pt file
-
+```
 import os
 import json
 import numpy as np
@@ -275,22 +278,22 @@ class TritonPythonModel:
     	return responses
 	def finalize(self):
      self.logger.log_info("Finalizing the SmolLM2 model.")
- 
+ ```
 
 # Run the container of the server with CPU and allocate the ports
-
+```
  docker run -it --rm -p 8000:8000 -p 8001:8001 -p 8002:8002 \
 -v ${PWD}/model_repository:/opt/tritonserver/model_repository \
 triton-transformer-server tritonserver --model-repository=/opt/tritonserver/model_repository
-
+```
 # Client-Side Inference
 You can use the Triton Client SDK to send inference requests to the server.
 Install Triton Client SDK:
 
 pip install tritonclient[all]
 
-**Example Python Script for Inference:
-**
+**Example Python Script for Inference:**
+```
 import numpy as np
 import tritonclient.http as httpclient  # Use grpcclient for gRPC
 
@@ -323,7 +326,7 @@ response = client.infer(model_name, inputs=[input_tensor], outputs=[output_tenso
 **Extract output**
 output_data = response.as_numpy("output_0")
 print("Model output:", output_data)
-
+```
 # Link of Triton Inference Server Documentation
  
 https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/getting_started/quickstart.html
